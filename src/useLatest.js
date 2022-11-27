@@ -24,13 +24,13 @@ export default function App() {
   }, [latestText]);
 
   return (
-      <div className="App">
-        <input
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            placeholder="Search..."
-        />
-        <Button text="submit" onClick={onClick} />
-      </div>
+    <div className="App">
+      <input
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        placeholder="Search..."
+      />
+      <Button text="submit" onClick={onClick} />
+    </div>
   );
 }
