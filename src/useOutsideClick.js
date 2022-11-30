@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useReducer } from "react";
 
 function useOutsideClick(elementRef, handler, attached = true) {
   useEffect(() => {
@@ -39,16 +39,24 @@ function Tooltip({ opened, onClose }) {
 
 export default function App() {
   const [opened, setOpened] = useState(false);
+  const [, forceUpdate] = useReducer((v) => v + 1, 0);
+
   const onClose = () => {
     setOpened(false);
   };
 
   return (
-    <div className="toast-container">
-      <Tooltip opened={opened} onClose={onClose} />
-      <button className="tooltip-trigger" onClick={() => setOpened((v) => !v)}>
-        Click to open tooltip
-      </button>
-    </div>
+    <>
+      <button onClick={forceUpdate}>Click</button>
+      <div className="toast-container">
+        <Tooltip opened={opened} onClose={onClose} />
+        <button
+          className="tooltip-trigger"
+          onClick={() => setOpened((v) => !v)}
+        >
+          Click to open tooltip
+        </button>
+      </div>
+    </>
   );
 }
