@@ -1,6 +1,6 @@
 import { memo, useCallback, useLayoutEffect, useRef, useState } from "react";
 
-function useLatest(value) {
+export function useLatest(value) {
   const valueRef = useRef(value);
 
   useLayoutEffect(() => {

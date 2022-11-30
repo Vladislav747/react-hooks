@@ -1,13 +1,16 @@
 import { useState, useRef, useEffect, useReducer } from "react";
 
+import { useLatest } from "./useLatest";
+
 function useOutsideClick(elementRef, handler, attached = true) {
+  const latestHandler = useLatest(handler);
   useEffect(() => {
     if (!attached) return;
 
     const handleClick = (e) => {
       if (!elementRef.current) return;
       if (!elementRef.current.contains(e.target)) {
-        handler();
+        latestHandler.current();
       }
     };
 
@@ -16,7 +19,7 @@ function useOutsideClick(elementRef, handler, attached = true) {
     return () => {
       document.removeEventListener("click", handleClick);
     };
-  }, [elementRef, handler, attached]);
+  }, [elementRef, latestHandler, attached]);
 }
 
 function Tooltip({ opened, onClose }) {
@@ -47,8 +50,10 @@ export default function App() {
 
   return (
     <>
-      <button onClick={forceUpdate}>Click</button>
-      <div className="toast-container">
+      <button onClick={forceUpdate} style={{ margin: 20 }}>
+        Click
+      </button>
+      <div className="tooltip-container">
         <Tooltip opened={opened} onClose={onClose} />
         <button
           className="tooltip-trigger"
