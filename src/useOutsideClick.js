@@ -1,7 +1,28 @@
 import { useState, useRef, useEffect } from "react";
 
+function useOutsideClick(elementRef, handler, attached = true) {
+  useEffect(() => {
+    if (!attached) return;
+
+    const handleClick = (e) => {
+      if (!elementRef.current) return;
+      if (!elementRef.current.contains(e.target)) {
+        handler();
+      }
+    };
+
+    document.addEventListener("click", handleClick);
+
+    return () => {
+      document.removeEventListener("click", handleClick);
+    };
+  }, [elementRef, handler, attached]);
+}
+
 function Tooltip({ opened, onClose }) {
   const tooltipRef = useRef(null);
+
+  useOutsideClick(tooltipRef, onClose, opened);
 
   useEffect(() => {
     if (!opened) return null;
